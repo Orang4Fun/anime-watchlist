@@ -1,0 +1,736 @@
+/* ==== CYBERPUNK THEME & BASE LAYOUT ==== */
+:root {
+  --bg: #05050a;
+  --pink: #ff2a85;
+  --cyan: #00f0ff;
+  --violet: #7928ca;
+  --panel: rgba(12, 9, 26, 0.84);
+  --font: 'Chakra Petch', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+  background-color: var(--bg);
+  color: #f0f0f5;
+  font-family: var(--font);
+  margin: 0;
+  padding: 2rem;
+  text-align: center;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+.page {
+  position: relative;
+  z-index: 1;
+}
+
+/* ==== ANIMATED CYBERPUNK BACKGROUND (inline SVG from +page.svelte) ==== */
+.cyberpunk-bg {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: -1;
+  background: #02010a;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.cyberpunk-bg svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Darkening at the top and edges to keep title and cards readable */
+.bg-vignette {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to bottom, rgba(2, 1, 10, 0.6) 0%, rgba(2, 1, 10, 0) 32%),
+    radial-gradient(ellipse at 50% 45%, rgba(2, 1, 10, 0) 35%, rgba(2, 1, 10, 0.55) 100%);
+}
+
+/* ---- Flying cars ---- */
+.car-move {
+  animation: carRun linear infinite;
+  will-change: transform;
+}
+.car-move.rev {
+  animation-direction: reverse;
+}
+@keyframes carRun {
+  from { transform: translateX(-320px); }
+  to   { transform: translateX(1920px); }
+}
+
+/* ---- Monorail ---- */
+.train {
+  animation: trainRun 18s linear infinite;
+  animation-delay: -6s;
+}
+@keyframes trainRun {
+  from { transform: translateX(-300px); }
+  to   { transform: translateX(1900px); }
+}
+
+/* ---- Blimp ---- */
+.blimp {
+  animation: blimpFly 160s linear infinite;
+  animation-delay: -45s;
+}
+@keyframes blimpFly {
+  from { transform: translateX(-200px); }
+  to   { transform: translateX(1800px); }
+}
+
+/* ---- Searchlights: different paths, speeds and pulsing ---- */
+.sweep {
+  animation-timing-function: ease-in-out;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}
+.sweep.s1 { animation-name: sweepA; animation-duration: 6.5s; }
+.sweep.s2 { animation-name: sweepB; animation-duration: 9s;   animation-delay: -3s; }
+.sweep.s3 { animation-name: sweepC; animation-duration: 5.2s; animation-delay: -1.5s; }
+.sweep.s4 { animation-name: sweepD; animation-duration: 8s;   animation-delay: -5s; }
+
+@keyframes sweepA {
+  0%   { transform: rotate(-34deg); }
+  40%  { transform: rotate(4deg); }
+  60%  { transform: rotate(-6deg); }
+  100% { transform: rotate(30deg); }
+}
+@keyframes sweepB {
+  0%   { transform: rotate(30deg); }
+  30%  { transform: rotate(-10deg); }
+  70%  { transform: rotate(14deg); }
+  100% { transform: rotate(-32deg); }
+}
+@keyframes sweepC {
+  0%   { transform: rotate(-20deg); }
+  50%  { transform: rotate(22deg); }
+  100% { transform: rotate(-4deg); }
+}
+@keyframes sweepD {
+  0%   { transform: rotate(26deg); }
+  35%  { transform: rotate(-18deg); }
+  65%  { transform: rotate(-2deg); }
+  100% { transform: rotate(-36deg); }
+}
+
+.pulse {
+  animation: beamPulse 3.4s ease-in-out infinite;
+}
+.pulse.p2 { animation-duration: 4.6s; animation-delay: -1s; }
+.pulse.p3 { animation-duration: 2.8s; animation-delay: -2s; }
+.pulse.p4 { animation-duration: 5.4s; animation-delay: -3s; }
+@keyframes beamPulse {
+  0%, 100% { opacity: 1; }
+  45%      { opacity: 0.45; }
+  50%      { opacity: 0.9; }
+  70%      { opacity: 0.35; }
+}
+
+/* ---- Fog, clouds, hologram ---- */
+.fog {
+  animation: fogDrift 36s ease-in-out infinite alternate;
+}
+.fog.slow {
+  animation-duration: 52s;
+  animation-direction: alternate-reverse;
+}
+@keyframes fogDrift {
+  from { transform: translateX(-70px); }
+  to   { transform: translateX(70px); }
+}
+
+.clouds {
+  animation: fogDrift 90s ease-in-out infinite alternate;
+}
+
+.bob {
+  animation: bob 7s ease-in-out infinite alternate;
+}
+@keyframes bob {
+  from { transform: translateY(-7px); }
+  to   { transform: translateY(7px); }
+}
+
+.holo-ring {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: holoSpin 6s linear infinite;
+}
+@keyframes holoSpin {
+  0%   { transform: scaleX(1); }
+  50%  { transform: scaleX(0.03); }
+  100% { transform: scaleX(1); }
+}
+
+/* ---- Neon signs, windows, warning lights, stars ---- */
+.sign-text {
+  font-family: 'Chakra Petch', 'Noto Sans JP', 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'Meiryo', sans-serif;
+  font-weight: 700;
+}
+.flick {
+  animation: signFlicker 6s infinite;
+}
+@keyframes signFlicker {
+  0%, 18%, 22%, 60%, 64%, 100% { opacity: 1; }
+  20% { opacity: 0.3; }
+  62% { opacity: 0.5; }
+}
+
+.win-blink {
+  animation: winBlink 5s infinite;
+}
+@keyframes winBlink {
+  0%, 40%, 100% { opacity: 1; }
+  44% { opacity: 0.15; }
+  48% { opacity: 1; }
+  70% { opacity: 0.3; }
+  74% { opacity: 1; }
+}
+
+.beacon {
+  animation: beacon 1.8s steps(1, end) infinite;
+}
+@keyframes beacon {
+  0%   { opacity: 1; }
+  18%  { opacity: 0.08; }
+}
+
+.twinkle {
+  animation: twinkle 4s ease-in-out infinite;
+}
+@keyframes twinkle {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.15; }
+}
+
+/* ==== UI ELEMENTS (CONTENT ABOVE THE BACKGROUND) ==== */
+h1 {
+  font-size: clamp(2rem, 6vw, 3.4rem);
+  font-weight: 700;
+  color: var(--pink);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  text-shadow:
+    -2px 0 rgba(0, 240, 255, 0.55),
+    2px 0 rgba(255, 42, 133, 0.45),
+    0 0 14px rgba(255, 42, 133, 0.6);
+  margin: 0.5rem 0 1.5rem;
+  animation: neonPulse 3s infinite alternate, neonFlicker 9s infinite;
+  position: relative;
+  z-index: 2;
+}
+
+@keyframes neonPulse {
+  0%   { text-shadow: -2px 0 rgba(0, 240, 255, 0.5), 2px 0 rgba(255, 42, 133, 0.4), 0 0 10px rgba(255, 42, 133, 0.6); }
+  100% { text-shadow: -2px 0 rgba(0, 240, 255, 0.7), 2px 0 rgba(255, 42, 133, 0.6), 0 0 22px rgba(255, 42, 133, 0.9), 0 0 36px rgba(0, 240, 255, 0.5); }
+}
+
+@keyframes neonFlicker {
+  0%, 89%, 92%, 96%, 100% { opacity: 1; }
+  90% { opacity: 0.55; }
+  94% { opacity: 0.75; }
+}
+
+button {
+  background: linear-gradient(135deg, #db1919, #ff2a85);
+  color: white;
+  font-family: var(--font);
+  padding: 0.7rem 1.5rem;
+  border: 1px solid #ff2a85;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  margin: 0.5rem;
+  box-shadow: 0 0 10px rgba(255, 42, 133, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  position: relative;
+  z-index: 2;
+}
+
+button:hover {
+  background: linear-gradient(135deg, #ff2a85, #00f0ff);
+  border-color: var(--cyan);
+  box-shadow: 0 0 20px rgba(0, 240, 255, 0.8);
+  transform: translateY(-2px);
+}
+
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+}
+
+input[type="text"] {
+  font-family: var(--font);
+  padding: 0.7rem 1rem;
+  border: 1px solid var(--violet);
+  border-radius: 4px;
+  font-size: 1rem;
+  width: min(340px, 86vw);
+  box-sizing: border-box;
+  background-color: rgba(18, 16, 32, 0.9);
+  color: var(--cyan);
+  margin: 0.5rem 0;
+  box-shadow: inset 0 0 8px rgba(121, 40, 202, 0.4);
+  position: relative;
+  z-index: 2;
+}
+
+input[type="text"]::placeholder {
+  color: rgba(0, 240, 255, 0.45);
+}
+
+input[type="text"]:focus {
+  outline: none;
+  border-color: var(--cyan);
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.6);
+}
+
+/* ==== LIST & CARDS ==== */
+ul#AnimeList {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 2.5rem;
+  margin-top: 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+ul#AnimeList li.empty {
+  max-width: 460px;
+  padding: 1.4rem 1.6rem;
+  color: #d8d4ee;
+  background: var(--panel);
+  border: 1px dashed rgba(0, 240, 255, 0.45);
+  border-radius: 6px;
+  backdrop-filter: blur(5px);
+  line-height: 1.5;
+}
+
+.anime-card-btn {
+  position: relative;
+  display: block;
+  width: 300px;
+  max-width: 86vw;
+  margin: 0;
+  padding: 12px 12px 18px;
+  color: inherit;
+  text-transform: none;
+  letter-spacing: normal;
+  font-weight: 600;
+  text-align: center;
+  background: linear-gradient(180deg, rgba(24, 15, 48, 0.88), rgba(10, 7, 22, 0.92));
+  border: 1px solid rgba(255, 42, 133, 0.35);
+  border-radius: 6px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7), inset 0 0 30px rgba(121, 40, 202, 0.14);
+  backdrop-filter: blur(6px);
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+/* Corner brackets like a crosshair / HUD frame */
+.anime-card-btn::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  pointer-events: none;
+  background:
+    linear-gradient(var(--cyan), var(--cyan)) top left / 14px 2px,
+    linear-gradient(var(--cyan), var(--cyan)) top left / 2px 14px,
+    linear-gradient(var(--cyan), var(--cyan)) top right / 14px 2px,
+    linear-gradient(var(--cyan), var(--cyan)) top right / 2px 14px,
+    linear-gradient(var(--pink), var(--pink)) bottom left / 14px 2px,
+    linear-gradient(var(--pink), var(--pink)) bottom left / 2px 14px,
+    linear-gradient(var(--pink), var(--pink)) bottom right / 14px 2px,
+    linear-gradient(var(--pink), var(--pink)) bottom right / 2px 14px;
+  background-repeat: no-repeat;
+  opacity: 0.75;
+  transition: opacity 0.25s ease;
+}
+
+.anime-card-btn:hover,
+.anime-card-btn:focus-visible {
+  background: linear-gradient(180deg, rgba(30, 18, 60, 0.92), rgba(12, 8, 28, 0.94));
+  transform: translateY(-6px);
+  border-color: var(--cyan);
+  box-shadow: 0 0 26px rgba(0, 240, 255, 0.4), 0 14px 34px rgba(0, 0, 0, 0.75);
+}
+
+.anime-card-btn:hover::after {
+  opacity: 1;
+}
+
+.anime-card-btn strong {
+  display: block;
+  margin-top: 0.9rem;
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.35);
+}
+
+.img-wrapper {
+  position: relative;
+  width: 100%;
+  height: 320px;
+  background-color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  border-radius: 4px;
+  border: 1px solid rgba(0, 240, 255, 0.25);
+}
+
+.img-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.anime-card-btn:hover .img-wrapper img {
+  transform: scale(1.06);
+}
+
+/* Scanlines over the image */
+.img-wrapper::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(to bottom, rgba(0, 0, 0, 0) 0 2px, rgba(0, 0, 0, 0.2) 2px 3px),
+    linear-gradient(to bottom, rgba(5, 5, 10, 0) 60%, rgba(5, 5, 10, 0.65) 100%);
+}
+
+.badge {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  z-index: 1;
+  padding: 0.2rem 0.6rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: #fff;
+  background: rgba(255, 42, 133, 0.88);
+  border-radius: 3px;
+  box-shadow: 0 0 10px rgba(255, 42, 133, 0.6);
+}
+
+.badge.seen {
+  color: #021015;
+  background: rgba(0, 240, 255, 0.92);
+  box-shadow: 0 0 10px rgba(0, 240, 255, 0.6);
+}
+
+/* ==== FILTERS ==== */
+.checkbox-group {
+  margin: 1.5rem 0;
+  position: relative;
+  z-index: 2;
+}
+
+.checkbox-label {
+  display: inline-flex;
+  align-items: center;
+  cursor: pointer;
+  margin: 0 1.2rem;
+  font-size: 1.1rem;
+  color: #ccc;
+  user-select: none;
+}
+
+.checkbox-label span {
+  display: inline-flex;
+  align-items: center;
+}
+
+.checkbox-label span::before {
+  content: "";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  border: 2px solid var(--pink);
+  margin-right: 0.6rem;
+  background-color: rgba(18, 16, 32, 0.9);
+  color: #04141a;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1;
+  transition: all 0.2s ease;
+}
+
+.checkbox-label input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.checkbox-label input[type="checkbox"]:checked + span::before {
+  content: "✓";
+  background-color: var(--cyan);
+  border-color: var(--cyan);
+  box-shadow: 0 0 12px var(--cyan);
+}
+
+.checkbox-label input[type="checkbox"]:checked + span {
+  color: var(--cyan);
+}
+
+.checkbox-label input[type="checkbox"]:focus-visible + span::before {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+}
+
+/* ==== DETAIL VIEW ==== */
+#AnimeNameDisplay {
+  color: var(--cyan);
+  font-size: clamp(1.8rem, 5vw, 2.8rem);
+  text-shadow: -2px 0 rgba(255, 42, 133, 0.5), 2px 0 rgba(0, 240, 255, 0.35), 0 0 14px rgba(0, 240, 255, 0.6);
+  animation: none;
+  position: relative;
+  z-index: 2;
+}
+
+#AnimePicture {
+  width: 320px;
+  max-width: 86vw;
+  max-height: 450px;
+  border-radius: 8px;
+  border: 2px solid var(--pink);
+  box-shadow: 0 0 20px rgba(255, 42, 133, 0.5), 0 0 60px rgba(121, 40, 202, 0.35);
+  object-fit: cover;
+  position: relative;
+  z-index: 2;
+}
+
+#AnimeDescription {
+  font-size: 1.15rem;
+  font-weight: 400;
+  line-height: 1.65;
+  text-align: left;
+  white-space: pre-line;
+  color: #e2e0f0;
+  max-width: 620px;
+  margin: 1.5rem auto;
+  padding: 1.5rem;
+  background: var(--panel);
+  border-radius: 8px;
+  border-left: 4px solid var(--pink);
+  backdrop-filter: blur(6px);
+  position: relative;
+  z-index: 2;
+}
+
+#deleteButton {
+  background: linear-gradient(135deg, #331111, #881111);
+  border-color: #ff3333;
+  position: relative;
+  z-index: 2;
+}
+
+#deleteButton:hover {
+  background: linear-gradient(135deg, #881111, #ff3333);
+  border-color: #ff6666;
+  box-shadow: 0 0 20px rgba(255, 51, 51, 0.7);
+}
+
+/* ==== SWEETALERT2 IN CYBERPUNK LOOK ==== */
+.swal2-container.swal2-backdrop-show,
+.swal2-container.swal2-noanimation {
+  background: rgba(2, 1, 10, 0.78) !important;
+  backdrop-filter: blur(4px);
+}
+
+.swal2-popup.cyber-popup {
+  font-family: var(--font);
+  background: linear-gradient(180deg, #160e30, #0a0718);
+  color: #f0f0f5;
+  border: 1px solid var(--pink);
+  border-radius: 8px;
+  box-shadow: 0 0 30px rgba(255, 42, 133, 0.35), 0 0 80px rgba(121, 40, 202, 0.3);
+}
+
+.cyber-popup .cyber-title {
+  color: var(--cyan);
+  letter-spacing: 0.06em;
+  text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+}
+
+.cyber-popup .cyber-label,
+.cyber-popup .swal2-html-container {
+  color: #d8d4ee;
+}
+
+.cyber-popup .swal2-input,
+.cyber-popup .swal2-textarea {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  margin: 1em 0 0.3em;
+  font-family: var(--font);
+  color: var(--cyan);
+  background: rgba(18, 16, 32, 0.95);
+  border: 1px solid var(--violet);
+  border-radius: 4px;
+  box-shadow: inset 0 0 8px rgba(121, 40, 202, 0.4);
+}
+
+.cyber-popup .swal2-input:focus,
+.cyber-popup .swal2-textarea:focus {
+  border-color: var(--cyan);
+  box-shadow: 0 0 12px rgba(0, 240, 255, 0.6);
+  outline: none;
+}
+
+.cyber-popup .swal2-validation-message {
+  color: #ff8fb8;
+  background: rgba(255, 42, 133, 0.12);
+}
+
+.cyber-popup .cyber-cancel {
+  background: transparent;
+  border-color: var(--violet);
+  box-shadow: none;
+  color: #cbb8ff;
+}
+
+.cyber-popup .cyber-cancel:hover {
+  background: rgba(121, 40, 202, 0.25);
+  border-color: var(--cyan);
+  box-shadow: 0 0 14px rgba(0, 240, 255, 0.5);
+}
+
+.cyber-popup .cyber-swal-img {
+  border: 2px solid var(--pink);
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(255, 42, 133, 0.5);
+}
+
+/* ==== MOBILE ==== */
+@media (max-width: 600px) {
+  body {
+    padding: 1rem;
+  }
+
+  ul#AnimeList {
+    gap: 1.6rem;
+  }
+
+  .checkbox-label {
+    margin: 0 0.6rem;
+  }
+}
+
+/* ==== REDUCED MOTION ==== */
+@media (prefers-reduced-motion: reduce) {
+  .cyberpunk-bg *,
+  h1 {
+    animation: none !important;
+  }
+
+  .car-move {
+    transform: translateX(var(--x0));
+  }
+
+  .train {
+    transform: translateX(600px);
+  }
+
+  .blimp {
+    transform: translateX(700px);
+  }
+
+  .anime-card-btn,
+  .anime-card-btn:hover {
+    transition: none;
+  }
+}
+
+/* ==== COVER PICKER (AniList) ==== */
+.cyber-popup .cover-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 14px;
+  max-height: 55vh;
+  overflow-y: auto;
+  padding: 4px;
+  text-align: left;
+}
+
+.cyber-popup .cover-option {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 0;
+  padding: 6px;
+  text-align: left;
+  text-transform: none;
+  letter-spacing: normal;
+  font-weight: 500;
+  color: #e8e6f6;
+  background: rgba(18, 16, 32, 0.95);
+  border: 1px solid rgba(121, 40, 202, 0.6);
+  border-radius: 6px;
+  box-shadow: none;
+}
+
+.cyber-popup .cover-option:hover,
+.cyber-popup .cover-option:focus-visible {
+  background: rgba(30, 18, 60, 0.95);
+  border-color: var(--cyan);
+  box-shadow: 0 0 16px rgba(0, 240, 255, 0.55);
+  transform: translateY(-3px);
+}
+
+.cyber-popup .cover-option img {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: 4px;
+  background: #000;
+}
+
+.cyber-popup .cover-title {
+  font-size: 0.82rem;
+  line-height: 1.25;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.cyber-popup .cover-meta {
+  font-size: 0.72rem;
+  color: var(--cyan);
+  opacity: 0.8;
+}
+
+.cyber-popup .cover-source {
+  margin: 0.8rem 0 0;
+  font-size: 0.75rem;
+  color: #9d96c4;
+}
